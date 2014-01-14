@@ -3,7 +3,8 @@ X = rand( 21,2);
 T = delaunayn(X);
 perms = [ 1 2; 2 3; 1 3];
 G = sparse(21,21);
-D = squareform( pdist(X))
+pdist = @(x)sqrt(sum(bsxfun( @minus, permute( x, [1 3 2]), permute( x, [3 1 2])).^2,3));
+D = pdist(X);
 for ii = 1 : 3
     G(:) = G + sparse( T(:,perms(ii,1)), T(:,perms(ii,2)) , D( sub2ind( [ 21 21], T(:,perms(ii,1)), T(:,perms(ii,2)) )),21,21)
 

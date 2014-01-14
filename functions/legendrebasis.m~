@@ -1,0 +1,27 @@
+function [ DP, legpoly] = legendrebasis( data, l );
+
+P = { 1, [ 1 0] };
+N = numel(data );
+DSP = zeros( horzcat( size(data), numel(l) ) );
+
+for gg = 1 : numel( l )
+    
+    for jj =  2 : l(gg)
+        ii = jj - 1;
+        P{3 } = ( [(2*ii+1)*P{ 2 },0] - [0 , 0 , ii * P{1}] ) ./ (ii+1);
+        P{1} = P{2};
+        P{2} = P{3};
+    end
+
+    switch l(gg)
+        case 0
+            P{2} = 1;
+        case 1
+            P{2} = [ 1 1 ];
+    end
+    
+    
+    
+    DP( [1:N] + N*(gg-1)) = polyval( P{2}, data );
+    
+end
